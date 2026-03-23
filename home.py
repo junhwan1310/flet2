@@ -131,10 +131,10 @@ def main(page: ft.Page):
         on_click=lambda e: print("가운데 버튼 클릭"),
     )
 
-    # ✅ 추가: FAB 위치를 하단 중앙에 도킹
+    # ✅ 이거 없으면 동그라미 죽음
     pagelet.floating_action_button_location = ft.FloatingActionButtonLocation.CENTER_DOCKED
 
-    # ✅ 추가: 하단바를 BottomAppBar로 연결
+    # ✅ 이거 없으면 내비게이션 바가 통째로 죽음
     pagelet.bottom_appbar = custom_bottom_appbar(
         selected_index=0,
     )

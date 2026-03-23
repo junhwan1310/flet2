@@ -84,40 +84,70 @@ def main(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.scroll = ft.ScrollMode.AUTO
-    page.title = "For Dog5"
+    page.title = "For Dog6 bottomsheet"
 
        #주소 팁 닫기
     def close_tip(e=None):
       harim_bottom_tip_sheet.open = False
       page.update()
 
-# 주소 팁 bottomsheet 정의하기
     harim_bottom_tip_sheet = ft.BottomSheet(
-        # ✅ 뒤 배경 안 까맣게
-        barrier_color=ft.Colors.TRANSPARENT,
+        # ✅ 1. 배경 어둡게 → 시선 집중 (핵심)
+        barrier_color=ft.Colors.with_opacity(0.4, ft.Colors.BLACK),  
+        # 기존 TRANSPARENT → 살짝 어둡게 바꿔야 "떠있는 느낌" 남
 
-        size_constraints=ft.BoxConstraints( # ✅ 높이를 크게
-            max_height=700,   # 필요하면 450, 500으로 더 키워도 됨
+        size_constraints=ft.BoxConstraints(
+            max_height=700,
             min_height=430,
         ),
 
-      content=ft.Container(
-          padding=20,
-          bgcolor=ft.Colors.WHITE,  # ✅ 여기 추가 (핵심)
-          content=ft.Column(
-              tight=True,
-            controls = [
-                  ft.Text("사료 검색", size=25, weight='bold'),
-                  input_box("Search"),
-                  ft.Text("하림 가맛시"),
-                  ft.Text("하림 가맛시"),
-                  ft.Text("하림 가맛시"),
-                  ft.Text("하림 가맛시"),
-                  ft.Text("하림 가맛시"),
-                  ft.Container(height=10),
-            ],
-          ),
-      )
+        content=ft.Container(
+            padding=20,
+            bgcolor=ft.Colors.WHITE,
+
+            # ✅ 2. 둥근 상단 → 바텀시트 느낌 강화
+            border_radius=ft.border_radius.only(
+                top_left=20,
+                top_right=20,
+            ),
+
+            # ✅ 3. 그림자 효과 → 떠있는 느낌
+            shadow=ft.BoxShadow(
+                spread_radius=2,
+                blur_radius=20,
+                color=ft.Colors.with_opacity(0.2, ft.Colors.BLACK),
+                offset=ft.Offset(0, -4),  # 위쪽 그림자
+            ),
+
+            content=ft.Column(
+                tight=True,
+                controls=[
+                    
+                    # ✅ 4. 드래그 핸들 (요즘 앱 필수 요소)
+                    ft.Container(
+                        width=40,
+                        height=5,
+                        border_radius=10,
+                        bgcolor=ft.Colors.GREY_400,
+                        alignment=ft.Alignment(0, 0),  # ✅ 가운데 정렬,
+                    ),
+
+                    ft.Container(height=10),  # 여백
+
+                    ft.Text("사료 검색", size=25, weight='bold'),
+
+                    input_box("Search"),
+
+                    ft.Text("하림 가맛시"),
+                    ft.Text("하림 가맛시"),
+                    ft.Text("하림 가맛시"),
+                    ft.Text("하림 가맛시"),
+                    ft.Text("하림 가맛시"),
+
+                    ft.Container(height=10),
+                ],
+            ),
+        )
     )
 
     # 앱이 시작될때 bottomSheet을 띄우기
