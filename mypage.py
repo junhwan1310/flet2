@@ -88,50 +88,7 @@ def custom_bottom_appbar(selected_index=0, on_tab_change=None):
         ),
     )
 
-
-def main(page: ft.Page):
-    page.padding = 0
-    page.spacing = 0
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.bgcolor = ft.Colors.TRANSPARENT
-    page.appbar = None
-
-    def change_tab(index):
-        print("선택된 탭:", index)
-
-    # ✅ 추가: Pagelet 생성
-    pagelet = ft.Pagelet(
-        expand=True,
-        content=ft.Container(),  # ✅ 필수
-        bgcolor=ft.Colors.YELLOW,  # ✅ 이게 있으니까 검은 음영이 사라짐 
-        )
-
-    pagelet.floating_action_button = ft.FloatingActionButton(
-        content=ft.Container(
-            width=60,   # 👉 버튼 안 영역 키움
-            height=60,
-            alignment=ft.Alignment(0, 0),
-            content=ft.Image(
-                src="bowlradius.png",
-                fit=ft.BoxFit.CONTAIN,  # 👉 비율 유지
-            ),
-        ),
-        bgcolor=ft.Colors.WHITE,
-        shape=ft.CircleBorder(),
-        elevation=0,
-        on_click=lambda e: print("가운데 버튼 클릭"),
-    )
-
-    # ✅ 추가: FAB 위치를 하단 중앙에 도킹
-    pagelet.floating_action_button_location = ft.FloatingActionButtonLocation.CENTER_DOCKED
-
-    # ✅ 추가: 하단바를 BottomAppBar로 연결
-    pagelet.bottom_appbar = custom_bottom_appbar(
-        selected_index=0,
-        on_tab_change=change_tab,
-    )
-
-    def banner(
+def banner(
         text="",
         image_src=None,
         bgcolor=ft.Colors.WHITE,
@@ -201,46 +158,92 @@ def main(page: ft.Page):
             ),
         )
 
-    def white_long_box(
-        text,
-        left_icon=ft.Icons.HOME,
-        bgcolor=ft.Colors.WHITE,
-        text_color=ft.Colors.BLACK,
-        on_click=None
-    ):
-        return ft.Container(
-            width=350,
-            height=70,
-            bgcolor=bgcolor,
-            border=None,
-            border_radius=16,
-            padding=ft.Padding.symmetric(horizontal=16),
-            on_click=on_click,
-            content=ft.Row(
-                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                controls=[
-                    ft.Row(
-                        spacing=10,
-                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                        controls=[
-                            ft.Icon(left_icon, color=text_color, size=22),
-                            ft.Text(
-                                text,
-                                size=14,
-                                weight=ft.FontWeight.W_500,
-                                color=text_color,
-                            ),
-                        ],
-                    ),
-                    ft.Icon(
-                        ft.Icons.CHEVRON_RIGHT,
-                        color=text_color,
-                        size=24,
-                    ),
-                ],
-            ),
+def white_long_box(
+    text,
+    left_icon=ft.Icons.HOME,
+    bgcolor=ft.Colors.WHITE,
+    text_color=ft.Colors.BLACK,
+    on_click=None
+):
+    return ft.Container(
+        width=350,
+        height=70,
+        bgcolor=bgcolor,
+        border=None,
+        border_radius=16,
+        padding=ft.Padding.symmetric(horizontal=16),
+        on_click=on_click,
+        content=ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+            controls=[
+                ft.Row(
+                    spacing=10,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    controls=[
+                        ft.Icon(left_icon, color=text_color, size=22),
+                        ft.Text(
+                            text,
+                            size=14,
+                            weight=ft.FontWeight.W_500,
+                            color=text_color,
+                        ),
+                    ],
+                ),
+                ft.Icon(
+                    ft.Icons.CHEVRON_RIGHT,
+                    color=text_color,
+                    size=24,
+                ),
+            ],
+        ),
+    )
+
+def change_tab(index):
+        print("선택된 탭:", index)
+
+
+def main(page: ft.Page):
+    page.padding = 0
+    page.spacing = 0
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.bgcolor = ft.Colors.TRANSPARENT
+    page.appbar = None
+
+    
+
+    # ✅ 추가: Pagelet 생성
+    pagelet = ft.Pagelet(
+        expand=True,
+        content=ft.Container(),  # ✅ 필수
+        bgcolor=ft.Colors.YELLOW,  # ✅ 이게 있으니까 검은 음영이 사라짐 
         )
+
+    pagelet.floating_action_button = ft.FloatingActionButton(
+        content=ft.Container(
+            width=60,   # 👉 버튼 안 영역 키움
+            height=60,
+            alignment=ft.Alignment(0, 0),
+            content=ft.Image(
+                src="bowlradius.png",
+                fit=ft.BoxFit.CONTAIN,  # 👉 비율 유지
+            ),
+        ),
+        bgcolor=ft.Colors.WHITE,
+        shape=ft.CircleBorder(),
+        elevation=0,
+        on_click=lambda e: print("가운데 버튼 클릭"),
+    )
+
+    # ✅ 추가: FAB 위치를 하단 중앙에 도킹
+    pagelet.floating_action_button_location = ft.FloatingActionButtonLocation.CENTER_DOCKED
+
+    # ✅ 추가: 하단바를 BottomAppBar로 연결
+    pagelet.bottom_appbar = custom_bottom_appbar(
+        selected_index=0,
+        on_tab_change=change_tab,
+    )
+
 
     # ✅ 기존 본문은 content로 유지
     pagelet.content = ft.Container(

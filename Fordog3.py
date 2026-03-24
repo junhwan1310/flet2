@@ -56,6 +56,18 @@ def long_box(
         ),
     )
 
+def bottom_continue_button(on_click=None):
+    return ft.Container(
+        alignment=ft.Alignment(0, 1),
+        padding=ft.padding.only(bottom=20),
+        content=long_box(
+            "Continue",
+            bgcolor=ft.Colors.YELLOW,
+            text_color=ft.Colors.BLACK,
+            on_click=on_click,
+        ),
+    )
+
 def invisible_checkbox(text):
     return ft.Container(
         width=350,
@@ -72,20 +84,6 @@ def invisible_checkbox(text):
             ],
         ),
     )
-
-def bottom_continue_button(on_click=None):
-    return ft.Container(
-        alignment=ft.Alignment(0, 1),
-        padding=ft.padding.only(bottom=20),
-        content=long_box(
-            "Continue",
-            bgcolor=ft.Colors.YELLOW,
-            text_color=ft.Colors.BLACK,
-            on_click=on_click,
-        ),
-    )
-
-
 
 def main(page: ft.Page):
     page.bgcolor = ft.Colors.WHITE

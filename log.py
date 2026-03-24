@@ -91,6 +91,105 @@ def custom_bottom_appbar(selected_index=0, on_tab_change=None):
     )
 
 
+def banner(
+    text="",
+    sub_text="",
+    image_src=None,
+    bgcolor=ft.Colors.WHITE,
+    text_color=ft.Colors.BLACK,
+    arrow_bgcolor=ft.Colors.WHITE,
+    on_click=None,
+):
+    left_controls = []
+
+    if image_src:
+        left_controls.append(
+            ft.Container(
+                width=50,
+                height=50,
+                border_radius=25,
+                clip_behavior=ft.ClipBehavior.HARD_EDGE,
+                content=ft.Image(
+                    src=image_src,
+                    width=50,
+                    height=50,
+                    fit=ft.BoxFit.COVER,
+                ),
+            )
+        )
+
+    left_controls.append(
+        ft.Column(
+            spacing=2,
+            alignment=ft.MainAxisAlignment.CENTER,
+            controls=[
+                ft.Text(
+                    text,
+                    size=18,
+                    weight=ft.FontWeight.W_600,
+                    color=text_color,
+                ),
+                ft.Text(
+                    sub_text,
+                    size=12,
+                    color=ft.Colors.GREY_700,
+                ),
+            ],
+        )
+    )
+
+    arrow_bg = ft.Colors.YELLOW if bgcolor == ft.Colors.WHITE else ft.Colors.WHITE
+
+    return ft.Container(
+        width=350,
+        height=72,
+        bgcolor=bgcolor,
+        border=ft.border.all(1, ft.Colors.GREY_300),
+        border_radius=16,
+        padding=ft.Padding(left=14, top=0, right=14, bottom=0),
+        on_click=on_click,
+        content=ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+            controls=[
+                ft.Row(
+                    spacing=12,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    controls=left_controls,
+                ),
+                ft.Container(
+                    width=40,
+                    height=40,
+                    bgcolor=arrow_bg,
+                    border_radius=20,
+                    alignment=ft.Alignment(0, 0),
+                    content=ft.Icon(
+                        ft.Icons.ARROW_FORWARD,
+                        color=ft.Colors.BLACK,
+                    ),
+                ),
+            ],
+        ),
+    )
+
+
+def micro_box(text):
+    return ft.Container(
+        padding=ft.padding.symmetric(horizontal=8, vertical=4),
+        bgcolor=ft.Colors.GREY_200,
+        border_radius=6,
+        content=ft.Text(
+            text,
+            size=10,
+            color=ft.Colors.BLACK,
+        ),
+    )
+
+
+def change_tab(index):
+    print("선택된 탭:", index)
+
+
 def main(page: ft.Page):
     # =========================
     # 1. page 기본 설정
@@ -102,13 +201,7 @@ def main(page: ft.Page):
     page.appbar = None
 
     # =========================
-    # 2. 이벤트/핸들러
-    # =========================
-    def change_tab(index):
-        print("선택된 탭:", index)
-
-    # =========================
-    # 3. pagelet 생성
+    # 2. pagelet 생성
     # =========================
     pagelet = ft.Pagelet(
         expand=True,
@@ -118,12 +211,12 @@ def main(page: ft.Page):
 
     pagelet.floating_action_button = ft.FloatingActionButton(
         content=ft.Container(
-            width=60,   # 👉 버튼 안 영역 키움
+            width=60,
             height=60,
             alignment=ft.Alignment(0, 0),
             content=ft.Image(
                 src="bowlradius.png",
-                fit=ft.BoxFit.CONTAIN,  # 👉 비율 유지
+                fit=ft.BoxFit.CONTAIN,
             ),
         ),
         bgcolor=ft.Colors.WHITE,
@@ -139,8 +232,20 @@ def main(page: ft.Page):
         on_tab_change=change_tab,
     )
 
+    dropdown = ft.Dropdown(
+        label="츄츄",
+        width=320,
+        border=ft.InputBorder.NONE,
+        content_padding=10,
+        options=[
+            ft.dropdown.Option("사과"),
+            ft.dropdown.Option("바나나"),
+            ft.dropdown.Option("포도"),
+        ],
+    )
+
     # =========================
-    # 4. 화면 상태값
+    # 3. 달력 화면 상태값
     # =========================
     today = datetime.date.today()
     current_year = today.year
@@ -149,218 +254,18 @@ def main(page: ft.Page):
 
     calendar_container = ft.Container()
 
-    # =========================================================
-    # [수정 1] 체중 라인차트 데이터 변경
-    # 기존: 날짜 5개
-    # 변경: 예시 이미지처럼 요일 7개
-    # =========================================================
-    weight_data = [
-        ("Mon", 2.2),
-        ("Tue", 2.3),
-        ("Wed", 4.2),
-        ("Thu", 2.0),
-        ("Fri", 5.0),
-        ("Sat", 6.2),
-        ("Sun", 3.9),
-    ]
-
     # =========================
-    # 5. log 화면 전용 내부 함수
+    # 4. 달력 관련 내부 함수
     # =========================
-    def banner(
-        text="",
-        sub_text="",  # 👉 추가
-        image_src=None,
-        bgcolor=ft.Colors.WHITE,
-        text_color=ft.Colors.BLACK,
-        arrow_bgcolor=ft.Colors.WHITE,
-        on_click=None,
-    ):
-        left_controls = []
-
-        if image_src:
-            left_controls.append(
-                ft.Container(
-                    width=50,
-                    height=50,
-                    border_radius=25,
-                    clip_behavior=ft.ClipBehavior.HARD_EDGE,
-                    content=ft.Image(
-                        src=image_src,
-                        width=50,
-                        height=50,
-                        fit=ft.BoxFit.COVER,
-                    ),
-                )
-            )
-
-        # 👉 여기 핵심 수정
-        left_controls.append(
-            ft.Column(
-                spacing=2,  # 👉 위아래 간격
-                alignment=ft.MainAxisAlignment.CENTER,
-                controls=[
-                    ft.Text(
-                        text,
-                        size=18,
-                        weight=ft.FontWeight.W_600,
-                        color=text_color,
-                    ),
-                    ft.Text(
-                        sub_text,  # 👉 추가 텍스트
-                        size=12,
-                        color=ft.Colors.GREY_700,
-                    ),
-                ],
-            )
-        )
-
-        # 배너 배경이 흰색이면 화살표 동그라미는 노란색
-        arrow_bg = ft.Colors.YELLOW if bgcolor == ft.Colors.WHITE else ft.Colors.WHITE
-
-        return ft.Container(
-            width=350,
-            height=72,
-            bgcolor=bgcolor,
-            border=ft.border.all(1, ft.Colors.GREY_300),
-            border_radius=16,
-            padding=ft.Padding(left=14, top=0, right=14, bottom=0),
-            on_click=on_click,
-            content=ft.Row(
-                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                controls=[
-                    ft.Row(
-                        spacing=12,
-                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                        controls=left_controls,
-                    ),
-                    ft.Container(
-                        width=40,
-                        height=40,
-                        bgcolor=arrow_bg,
-                        border_radius=20,
-                        alignment=ft.Alignment(0, 0),
-                        content=ft.Icon(
-                            ft.Icons.ARROW_FORWARD,
-                            color=ft.Colors.BLACK,
-                        ),
-                    ),
-                ],
-            ),
-        )
-
-    def micro_box(text):
-        return ft.Container(
-            padding=ft.padding.symmetric(horizontal=8, vertical=4),
-            bgcolor=ft.Colors.GREY_200,
-            border_radius=6,
-            content=ft.Text(
-                text,
-                size=10,
-                color=ft.Colors.BLACK,
-            ),
-        )
-
-    # =========================
-    # 6. 차트 관련 내부 함수
-    # =========================
-    # =========================================================
-    # [수정 2] build_weight_chart() 완전 수정
-    # - 회색 곡선
-    # - 왼쪽 숫자 숨김
-    # - 가로선만 표시
-    # - 아래 요일만 표시
-    # =========================================================
-    def build_weight_chart():
-        if not weight_data:
-            return ft.Text("기록이 없습니다.", color=ft.Colors.BLACK)
-
-        normal_points = []
-        highlight_points = []
-        bottom_labels = []
-
-        for i, (day_text, weight) in enumerate(weight_data):
-            normal_points.append(fch.LineChartDataPoint(i, weight))
-
-            # 강조 (Thu=3, Sat=5)
-            if i in [3, 5]:
-                highlight_points.append(fch.LineChartDataPoint(i, weight))
-
-            bottom_labels.append(
-                fch.ChartAxisLabel(
-                    value=i,
-                    label=ft.Text(
-                        day_text,
-                        size=15,
-                        color="#7A7A7A",
-                        weight=ft.FontWeight.W_500,
-                    ),
-                )
-            )
-
-        return fch.LineChart(
-            data_series=[
-                # 기본 회색 라인
-                fch.LineChartData(
-                    points=normal_points,
-                    stroke_width=3,
-                    color="#8A8A8A",
-                    curved=True,
-                    rounded_stroke_cap=True,
-                ),
-
-                # 노란 점만 따로 그리기 (핵심)
-                fch.LineChartData(
-                    points=highlight_points,
-                    stroke_width=0,
-                    color="#F2D21B",
-                ),
-            ],
-            min_x=0,
-            max_x=len(weight_data) - 1,
-            min_y=0,
-            max_y=8,
-            width=310,
-            height=280,
-            interactive=False,
-            border=ft.border.all(0, ft.Colors.TRANSPARENT),
-
-            left_axis=fch.ChartAxis(
-                labels=[],
-                label_size=0,
-            ),
-
-            bottom_axis=fch.ChartAxis(
-                labels=bottom_labels,
-                label_size=40,
-            ),
-
-            horizontal_grid_lines=fch.ChartGridLines(
-                interval=1.5,
-                color="#D9D9D9",
-                width=1,
-            ),
-
-            vertical_grid_lines=fch.ChartGridLines(
-                interval=1,
-                color=ft.Colors.TRANSPARENT,
-                width=0,
-            ),
-        )
-
-    # =========================
-    # 7. 달력 관련 내부 함수
-    # =========================
-    def month_title(year, month):
+    def month_title(year, month): # ☑️ strftime("%B %Y") → "March 2026"
         return datetime.date(year, month, 1).strftime("%B %Y")
 
-    def select_day(day):
-        nonlocal selected_date
+    def select_day(day): 
+        nonlocal selected_date # ☑️ selected_date 값을 수정하겠다는 선언 
         selected_date = datetime.date(current_year, current_month, day)
         build_calendar()
 
-    def prev_month(e):
+    def prev_month(e): 
         nonlocal current_year, current_month
         if current_month == 1:
             current_month = 12
@@ -368,6 +273,7 @@ def main(page: ft.Page):
         else:
             current_month -= 1
         build_calendar()
+        page.update()
 
     def next_month(e):
         nonlocal current_year, current_month
@@ -377,9 +283,10 @@ def main(page: ft.Page):
         else:
             current_month += 1
         build_calendar()
+        page.update()
 
-    def day_cell(day):
-        if day == 0:
+    def day_cell(day): 
+        if day == 0: # ☑️ 달력에서 빈칸 칸 처리
             return ft.Container(
                 width=40,
                 height=40,
@@ -395,7 +302,7 @@ def main(page: ft.Page):
             width=40,
             height=40,
             alignment=ft.Alignment(0, 0),
-            on_click=lambda e, d=day: select_day(d),
+            on_click=lambda e, d=day: select_day(d), # ☑️ 날짜 칸을 누르면 그 날짜를 선택하게 함
             content=ft.Container(
                 width=28,
                 height=28,
@@ -411,15 +318,15 @@ def main(page: ft.Page):
             ),
         )
 
-    def build_calendar():
-        cal = calendar.Calendar(firstweekday=6)
+    def build_calendar(): # ☑️ 달력 데이터 생성기
+        cal = calendar.Calendar(firstweekday=6) # ☑️ firstweekday=6 은 일요일부터 시작하게 만드는 설정
         month_days = cal.monthdayscalendar(current_year, current_month)
 
         cell_width = 40
         calendar_width = cell_width * 7
         weekday_names = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 
-        weekday_row = ft.Row(
+        weekday_row = ft.Row( # ☑️  SUN MON TUE WED ...
             width=calendar_width,
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             controls=[
@@ -437,7 +344,7 @@ def main(page: ft.Page):
         )
 
         week_rows = [
-            ft.Row(
+            ft.Row( # ☑️ Row 안에 날짜칸(day_cell)을 7개 넣음
                 width=calendar_width,
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                 controls=[day_cell(day) for day in week],
@@ -445,7 +352,7 @@ def main(page: ft.Page):
             for week in month_days
         ]
 
-        calendar_container.content = ft.Container(
+        calendar_container.content = ft.Container( 
             width=350,
             bgcolor=ft.Colors.WHITE,
             border_radius=30,
@@ -459,7 +366,7 @@ def main(page: ft.Page):
                         vertical_alignment=ft.CrossAxisAlignment.CENTER,
                         controls=[
                             ft.Text(
-                                month_title(current_year, current_month),
+                                month_title(current_year, current_month), # ☑️ 예: March 2026
                                 size=17,
                                 weight=ft.FontWeight.W_500,
                                 color=ft.Colors.BLACK,
@@ -489,38 +396,190 @@ def main(page: ft.Page):
                             ),
                         ],
                     ),
-                    weekday_row,
+                    weekday_row, # ☑️  SUN MON TUE WED ...
                     ft.Column(
                         tight=True,
                         spacing=8,
-                        controls=week_rows,
+                        controls=week_rows, # ☑️ 날짜칸(day_cell) 7개 
                     ),
                 ],
             ),
         )
 
+    # =========================
+    # 5. 차트 관련 내부 상태값 / 데이터
+    # =========================
+    selected_metric = "급여량"  # ☑️ 지금 현재 어떤 항목 차트를 보여줄지 저장하는 변수
+    chart_container = ft.Container()  # ☑️ 차트가 들어갈 빈 상자
+    metric_selector_container = ft.Container()  # ☑️ 항목 선택 버튼들을 다시 그리기 위한 상자
+
+    chart_data_map = {
+        "급여량": [
+            ("Mon", 2.8),
+            ("Tue", 3.0),
+            ("Wed", 3.4),
+            ("Thu", 3.1),
+            ("Fri", 3.6),
+            ("Sat", 3.8),
+            ("Sun", 3.3),
+        ],
+        "음수량": [
+            # ☑️ 비어 있으면 아래에서 "기록이 없습니다."가 뜸
+        ],
+        "몸무게": [
+            ("Mon", 2.2),
+            ("Tue", 2.3),
+            ("Wed", 4.2),
+            ("Thu", 2.0),
+            ("Fri", 5.0),
+            ("Sat", 6.2),
+            ("Sun", 3.9),
+        ],
+    }
+
+    # =========================
+    # 6. 차트 관련 함수
+    # =========================
+    def get_current_chart_data():  # ☑️ 예: selected_metric이 "몸무게"면 몸무게 데이터 반환
+        return chart_data_map[selected_metric]
+
+    def refresh_chart():  # ☑️ "차트 화면 다시 그리기" 담당
+        chart_container.content = build_line_chart()
+
+    def refresh_metric_selector():
+        metric_selector_container.content = ft.Row(
+            spacing=14,
+            controls=[
+                metric_label("급여량"),
+                metric_label("음수량"),
+                metric_label("몸무게"),
+            ],
+        )
+
+    def change_metric(metric):  # ☑️ "급여량", "음수량", "몸무게" 중 하나를 클릭했을 때 실행되는 함수
+        nonlocal selected_metric
+        selected_metric = metric
+        refresh_metric_selector()
+        refresh_chart()
         page.update()
 
-    # =========================
-    # 8. 화면 조립용 컨트롤
-    # =========================
-    dropdown = ft.Dropdown(
-        label="츄츄",
-        width=320,
-        border=ft.InputBorder.NONE,
-        content_padding=10,
-        options=[
-            ft.dropdown.Option("사과"),
-            ft.dropdown.Option("바나나"),
-            ft.dropdown.Option("포도"),
-        ],
-    )
+    def metric_label(text):  # ☑️ "• 급여량", "• 음수량", "• 몸무게" 버튼 만드는 함수
+        is_selected = selected_metric == text
+
+        return ft.Container(
+            on_click=lambda e, metric=text: change_metric(metric),  # ☑️ 클릭한 항목으로 차트 변경
+            ink=True,  # ☑️ 클릭했을 때 눌리는 느낌(터치 효과) 주기
+            border_radius=8,
+            padding=ft.padding.symmetric(horizontal=6, vertical=4),
+            content=ft.Text(
+                f"• {text}",
+                size=14,
+                color=ft.Colors.BLACK if is_selected else ft.Colors.GREY_600, # 🟨 선택된 항목만 진하게
+                weight=ft.FontWeight.W_600,
+            ),
+        )
+
+    def build_line_chart():  # ☑️ 실제 라인차트 객체를 만들어서 반환하는 핵심 함수
+        chart_data = get_current_chart_data()
+
+        if not chart_data:  # ☑️ 데이터가 아예 없으면 차트 대신 안내 문구 보여주기
+            return ft.Container(
+                width=310,
+                height=280,
+                alignment=ft.Alignment(0, 0),
+                content=ft.Text(
+                    "기록이 없습니다.",
+                    color=ft.Colors.BLACK,
+                    size=16,
+                    weight=ft.FontWeight.W_500,
+                ),
+            )
+
+        normal_points = []  # ☑️ 일반적인 회색 점
+        highlight_points = []  # ☑️ 노랗게 나오는 점
+        bottom_labels = []  # ☑️ 아래쪽 x축(Mon, Tue, Wed...) 라벨들을 담는 리스트
+
+        for i, (day_text, value) in enumerate(chart_data): 
+            normal_points.append(fch.LineChartDataPoint(i, value)) # ☑️ 이거 없으면 차트에 노란점만 남고 다 죽음
+
+            bottom_labels.append(   # 🟨  Mon  Tue  Wed
+                fch.ChartAxisLabel(
+                    value=i,
+                    label=ft.Text(
+                        day_text,
+                        size=14,
+                        color=ft.Colors.GREY_700,
+                        weight=ft.FontWeight.W_500,
+                    ),
+                )
+            )
+
+        sorted_points = sorted(  # ☑️ 값이 큰 순서대로 정렬해서 제일 큰 놈만 뽑는 부분
+            enumerate(chart_data),
+            key=lambda item: item[1][1], # 🟨 ("Mon", 2.8) 중에서 숫자값만 기준으로 정렬
+            reverse=True, 
+        )[:1]
+
+        highlight_indexes = [idx for idx, _ in sorted_points]  # ☑️ 1등이 몇 번째 위치인지 index만 따로 저장
+
+        for i, (_, value) in enumerate(chart_data):  # ☑️ 다시 차트를 돌며 1등 찾기
+            if i in highlight_indexes: # ☑️ 이게 없으면 전부 노란 점 된다
+                highlight_points.append(fch.LineChartDataPoint(i, value))
+
+        return fch.LineChart(
+            data_series=[
+                fch.LineChartData(
+                    points=normal_points,
+                    stroke_width=3,
+                    color="#8A8A8A",
+                    curved=True,
+                    rounded_stroke_cap=True,
+                ),
+                fch.LineChartData(
+                    points=highlight_points,
+                    stroke_width=0,
+                    point=True,
+                    color="#F2D21B",
+                ),
+            ],
+            min_x=0,
+            max_x=len(chart_data) - 1,
+            min_y=0,
+            max_y=8,
+            width=310,
+            height=280,
+            interactive=True,
+            border=ft.border.all(0, ft.Colors.TRANSPARENT),
+            left_axis=fch.ChartAxis(
+                labels=[],
+                label_size=0,
+            ),
+            bottom_axis=fch.ChartAxis(
+                labels=bottom_labels,
+                label_size=40,
+            ),
+            horizontal_grid_lines=fch.ChartGridLines(
+                interval=1.5,
+                color="#D9D9D9",
+                width=1,
+            ),
+            vertical_grid_lines=fch.ChartGridLines(
+                interval=1,
+                color=ft.Colors.TRANSPARENT,
+                width=0,
+            ),
+        )
 
     # =========================
-    # 9. 초기 렌더링
+    # 7. 첫 차트 / 버튼 생성
     # =========================
-    # 처음 화면에 달력 1회 생성 / 이게 없으면 달력 소멸 
-    build_calendar()
+    refresh_metric_selector()
+    refresh_chart()
+
+    # =========================
+    # 8. 달력 초기 렌더링
+    # =========================
+    build_calendar() # ☑️ 이게 없으면 화면에 달력이 안뜸 
 
     # =========================
     # 10. pagelet 본문 연결
@@ -559,7 +618,7 @@ def main(page: ft.Page):
                     ),
 
                     ft.Container(height=2),
-                    calendar_container,
+                    calendar_container, # ☑️ 이거 없어도 달력 안나옴 
                     ft.Container(
                         width=350,
                         content=ft.Divider(
@@ -572,16 +631,15 @@ def main(page: ft.Page):
                         weight=ft.FontWeight.W_500,
                         color=ft.Colors.BLACK,
                     ),
-                    banner(image_src="dog.jpeg", text="2026.03.12~2026.03.19", sub_text="산책 기록 요약", bgcolor=ft.Colors.YELLOW),
+                    banner(
+                        image_src="dog.jpeg",
+                        text="2026.03.12~2026.03.19",
+                        sub_text="산책 기록 요약",
+                        bgcolor=ft.Colors.YELLOW,
+                    ),
 
                     ft.Container(height=12),
 
-                    # =========================================================
-                    # [수정 3] 기존 "체중 변화" 카드 부분을 통째로 교체
-                    # - 상단 노란 헤더 추가
-                    # - 내부에 Stack 사용
-                    # - 차트 위에 노란 점 2개 추가
-                    # =========================================================
                     ft.Container(
                         width=350,
                         bgcolor="#F7F7F7",
@@ -591,7 +649,6 @@ def main(page: ft.Page):
                         content=ft.Column(
                             spacing=0,
                             controls=[
-                                # 상단 노란 헤더
                                 ft.Container(
                                     height=74,
                                     bgcolor=ft.Colors.YELLOW,
@@ -610,8 +667,6 @@ def main(page: ft.Page):
                                         ],
                                     ),
                                 ),
-
-                                # 카드 본문
                                 ft.Container(
                                     padding=ft.padding.all(14),
                                     content=ft.Column(
@@ -621,29 +676,7 @@ def main(page: ft.Page):
                                                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                                                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
                                                 controls=[
-                                                    ft.Row(
-                                                        spacing=14,
-                                                        controls=[
-                                                            ft.Text(
-                                                                "• 급여량",
-                                                                size=13,
-                                                                color="#777777",
-                                                                weight=ft.FontWeight.W_600,
-                                                            ),
-                                                            ft.Text(
-                                                                "• 음수량",
-                                                                size=13,
-                                                                color="#777777",
-                                                                weight=ft.FontWeight.W_600,
-                                                            ),
-                                                            ft.Text(
-                                                                "• 몸무게",
-                                                                size=13,
-                                                                color="#777777",
-                                                                weight=ft.FontWeight.W_600,
-                                                            ),
-                                                        ],
-                                                    ),
+                                                    metric_selector_container,
                                                     ft.Container(
                                                         width=95,
                                                         height=38,
@@ -659,14 +692,7 @@ def main(page: ft.Page):
                                                     ),
                                                 ],
                                             ),
-
-                                            # 차트만 카드 안에 둠
-                                            ft.Container(
-                                                width=320,
-                                                height=330,
-                                                alignment=ft.Alignment(0, 0),
-                                                content=build_weight_chart(),
-                                            ),
+                                            chart_container, # ☑️ 이거 없으면 라인차트 안나옴 
                                         ],
                                     ),
                                 ),
@@ -674,7 +700,6 @@ def main(page: ft.Page):
                         ),
                     ),
 
-                    # ✅ micro_box는 카드 바깥으로 뺌
                     ft.Container(height=8),
 
                     ft.Container(

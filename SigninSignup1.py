@@ -34,7 +34,7 @@ def long_box(
         alignment=ft.Alignment(0, 0),
         on_click=on_click,
         content=ft.Row(
-            alignment=ft.MainAxisAlignment.CENTER,
+            alignment=ft.MainAxisAlignment.CENTER, # 이게 없으면 롱박스 안 글자가 왼쪽으로 쏠림
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
             spacing=8,
             controls=controls,
@@ -43,8 +43,8 @@ def long_box(
 
 def main(page: ft.Page):
     page.bgcolor = ft.Colors.WHITE
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
-    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER # 이게 없으면 전체가 천장으로 올라감
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER # 이게 없으면 전체가 왼쪽으로 붙음 
     page.title = "Sign In / Sign Up"
 
     title_text = ft.Text(

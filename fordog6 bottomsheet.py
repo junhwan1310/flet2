@@ -86,11 +86,6 @@ def main(page: ft.Page):
     page.scroll = ft.ScrollMode.AUTO
     page.title = "For Dog6 bottomsheet"
 
-       #주소 팁 닫기
-    def close_tip(e=None):
-      harim_bottom_tip_sheet.open = False
-      page.update()
-
     harim_bottom_tip_sheet = ft.BottomSheet(
         # ✅ 1. 배경 어둡게 → 시선 집중 (핵심)
         barrier_color=ft.Colors.with_opacity(0.4, ft.Colors.BLACK),  

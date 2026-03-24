@@ -88,6 +88,111 @@ def custom_bottom_appbar(selected_index=0, on_tab_change=None):
         ),
     )
 
+def invisible_middle_box(image_src):
+        return ft.Container(
+            width=200,   # 👉 크게 키움 (원하는 값으로 조절)
+            height=200,
+            bgcolor=ft.Colors.TRANSPARENT,  # 👉 완전 투명
+            border=None,  # 👉 테두리 없음
+            border_radius=20,  # 👉 둥글게 (선택)
+            alignment=ft.Alignment(0, 0),
+            content=ft.Image(
+                src=image_src,
+                fit=ft.BoxFit.COVER,  # 👉 꽉 채우기
+            ),
+        )
+
+def menu_box(image_src):
+    return ft.Container(
+        width=95,
+        height=95,
+        padding=0,
+        margin=0,
+        content=ft.Image(
+            src=image_src,
+            fit=ft.BoxFit.COVER,  # 꽉 채우기
+        ),
+    )
+
+def super_long_box(controls=None):
+        return ft.Container(
+            width=350,
+            height=100,
+            bgcolor=ft.Colors.WHITE,
+            border=ft.border.all(1, ft.Colors.GREY_300),
+            border_radius=10,
+            padding=10,
+            content=ft.Column(
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.START,  # 왼쪽 정렬
+                controls=controls or [],  # 👉 리스트로 받기
+            ),
+        )
+
+def mini_box(text):
+    return ft.Container(
+        width=70,
+        height=60,
+        bgcolor=ft.Colors.YELLOW,
+        border_radius=10,
+        alignment=ft.Alignment(0, 0),  # ✅ 여기 수정
+        content=ft.Text(
+            text,
+            size=18,
+            weight=ft.FontWeight.W_700,
+            color=ft.Colors.BLACK,
+        ),
+    )
+
+def micro_box(text):
+    return ft.Container(
+        padding=ft.Padding.symmetric(horizontal=8, vertical=4),
+        bgcolor=ft.Colors.GREY_200,
+        border_radius=6,
+        content=ft.Text(
+            text,
+            size=10,
+            color=ft.Colors.BLACK,
+        ),
+    )
+
+def record_card(date_text, title_text, info_list):
+    return ft.Row(
+        alignment=ft.MainAxisAlignment.START,
+        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        spacing=10,
+        controls=[
+            mini_box(date_text),
+
+            ft.Column(
+                spacing=6,
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.START,
+                controls=[
+                    ft.Row(
+                        spacing=6,
+                        controls=[
+                            ft.Text("🔥"),
+                            ft.Text(
+                                title_text,
+                                size=16,
+                                weight=ft.FontWeight.W_600,
+                                color=ft.Colors.BLACK,
+                            ),
+                        ],
+                    ),
+                    ft.Row(
+                        spacing=6,
+                        controls=[micro_box(info) for info in info_list],
+                    ),
+                ],
+            ),
+        ],
+    )
+
+def change_tab(index):
+        print("선택된 탭:", index)
+
 
 def main(page: ft.Page):
     page.padding = 0
@@ -95,9 +200,7 @@ def main(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.bgcolor = ft.Colors.TRANSPARENT
     page.appbar = None
-
-    def change_tab(index):
-        print("선택된 탭:", index)
+    
 
     # ✅ 추가: Pagelet 생성
     pagelet = ft.Pagelet(
@@ -129,109 +232,7 @@ def main(page: ft.Page):
     pagelet.bottom_appbar = custom_bottom_appbar(
         selected_index=0,
         on_tab_change=change_tab,
-    )
-
-    def invisible_middle_box(image_src):
-        return ft.Container(
-            width=200,   # 👉 크게 키움 (원하는 값으로 조절)
-            height=200,
-            bgcolor=ft.Colors.TRANSPARENT,  # 👉 완전 투명
-            border=None,  # 👉 테두리 없음
-            border_radius=20,  # 👉 둥글게 (선택)
-            alignment=ft.Alignment(0, 0),
-            content=ft.Image(
-                src=image_src,
-                fit=ft.BoxFit.COVER,  # 👉 꽉 채우기
-            ),
-        )
-
-    def menu_box(image_src):
-        return ft.Container(
-            width=95,
-            height=95,
-            padding=0,
-            margin=0,
-            content=ft.Image(
-                src=image_src,
-                fit=ft.BoxFit.COVER,  # 꽉 채우기
-            ),
-        )
-
-    def super_long_box(controls=None):
-            return ft.Container(
-                width=350,
-                height=100,
-                bgcolor=ft.Colors.WHITE,
-                border=ft.border.all(1, ft.Colors.GREY_300),
-                border_radius=10,
-                padding=10,
-                content=ft.Column(
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    horizontal_alignment=ft.CrossAxisAlignment.START,  # 왼쪽 정렬
-                    controls=controls or [],  # 👉 리스트로 받기
-                ),
-            )
-
-    def mini_box(text):
-        return ft.Container(
-            width=70,
-            height=60,
-            bgcolor=ft.Colors.YELLOW,
-            border_radius=10,
-            alignment=ft.Alignment(0, 0),  # ✅ 여기 수정
-            content=ft.Text(
-                text,
-                size=18,
-                weight=ft.FontWeight.W_700,
-                color=ft.Colors.BLACK,
-            ),
-        )
-
-    def micro_box(text):
-        return ft.Container(
-            padding=ft.Padding.symmetric(horizontal=8, vertical=4),
-            bgcolor=ft.Colors.GREY_200,
-            border_radius=6,
-            content=ft.Text(
-                text,
-                size=10,
-                color=ft.Colors.BLACK,
-            ),
-        )
-
-    def record_card(date_text, title_text, info_list):
-        return ft.Row(
-            alignment=ft.MainAxisAlignment.START,
-            vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            spacing=10,
-            controls=[
-                mini_box(date_text),
-
-                ft.Column(
-                    spacing=6,
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    horizontal_alignment=ft.CrossAxisAlignment.START,
-                    controls=[
-                        ft.Row(
-                            spacing=6,
-                            controls=[
-                                ft.Text("🔥"),
-                                ft.Text(
-                                    title_text,
-                                    size=16,
-                                    weight=ft.FontWeight.W_600,
-                                    color=ft.Colors.BLACK,
-                                ),
-                            ],
-                        ),
-                        ft.Row(
-                            spacing=6,
-                            controls=[micro_box(info) for info in info_list],
-                        ),
-                    ],
-                ),
-            ],
-        )
+    )    
 
     menu_grid1 = ft.Column(
       spacing=14,

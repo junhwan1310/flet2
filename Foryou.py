@@ -1,19 +1,5 @@
 import flet as ft
 
-def section_gap(size=40):
-    return ft.Container(height=size)
-
-def input_box(label=None, hint_text=None):
-    return ft.TextField(
-        width=350,
-        height=50,
-        border_radius=10,
-        border_color=ft.Colors.GREY_300,
-        focused_border_color=ft.Colors.GREY_400,
-        hint_text = hint_text,
-        label=label,  # 선택적으로 라벨도 넣을 수 있음
-    )
-
 def long_box(
     text,
     bgcolor=ft.Colors.WHITE,
@@ -53,6 +39,17 @@ def long_box(
         ),
     )
 
+def input_box(label=None, hint_text=None):
+    return ft.TextField(
+        width=350,
+        height=50,
+        border_radius=10,
+        border_color=ft.Colors.GREY_300,
+        focused_border_color=ft.Colors.GREY_400,
+        hint_text = hint_text,
+        label=label,  # 선택적으로 라벨도 넣을 수 있음
+    )
+
 def bottom_continue_button(on_click=None):
     return ft.Container(
         alignment=ft.Alignment(0, 1),
@@ -64,6 +61,10 @@ def bottom_continue_button(on_click=None):
             on_click=on_click,
         ),
     )
+
+# def section_gap(size=40):
+#     return ft.Container(height=size)
+
 
 def main(page: ft.Page):
     page.bgcolor = ft.Colors.WHITE
