@@ -279,7 +279,6 @@ def reminder_box(title, subtitle, default_time, default_interval, is_on=True):
 
 
 def subscribe_reminder_box(title, subtitle, is_on=True):
-    # ✅ 이 함수는 "구독 알림 설정" 카드 안에서 쓰는 더 단순한 한 줄 박스
     # ✅ reminder_box()와 다르게 드롭다운은 없고, 텍스트 + 스위치만 있음
     return ft.Container(
         height=78,  # 🟩 알림 한 줄 박스 높이
@@ -372,8 +371,6 @@ def build_page_content(page: ft.Page, pagelet: ft.Pagelet):
                 spacing=16,
                 controls=[
                     custom_appbar("알림"),
-                    # ✅ 화면 맨 위에 알림 페이지용 앱바 배치
-
                     ft.Divider(height=1, color=ft.Colors.GREY_300),
 
                     # ✅ 첫 번째 카드
@@ -403,20 +400,16 @@ def build_page_content(page: ft.Page, pagelet: ft.Pagelet):
                                     ],
                                 ),
                                 reminder_box("밥주기", "12시간 알림 간격", "08:00 AM", "12시간", True),
-                                # ✅ reminder_box()를 호출해서 첫 번째 알림 줄 생성
-
                                 reminder_box("물주기", "4시간 알림 간격", "08:00 AM", "4시간", True),
-                                # ✅ reminder_box()를 재사용해서 두 번째 알림 줄 생성
-
                                 reminder_box("약먹이기", "12시간 알림 간격", "08:00 AM", "12시간", False),
-                                # ✅ reminder_box()를 재사용해서 세 번째 알림 줄 생성
+                                
                             ],
                         ),
                     ),
 
                     # ✅ 두 번째 카드
                     ft.Container(
-                        width=card_width,  # ✅ 첫 카드와 같은 폭 사용
+                        width=card_width,  
                         padding=16,
                         bgcolor=ft.Colors.WHITE,
                         border=ft.border.all(1, "#D0D0D0"),
@@ -436,10 +429,8 @@ def build_page_content(page: ft.Page, pagelet: ft.Pagelet):
                                     ],
                                 ),
                                 subscribe_reminder_box("3일 전", "구독 배송 3일 전 안내", True),
-                                # ✅ subscribe_reminder_box()를 호출해서 구독 알림 한 줄 생성
-
                                 subscribe_reminder_box("7일 전", "구독 배송 7일 전 안내", True),
-                                # ✅ subscribe_reminder_box()를 재사용해서 두 번째 줄 생성
+                                
                             ],
                         ),
                     ),
@@ -449,7 +440,7 @@ def build_page_content(page: ft.Page, pagelet: ft.Pagelet):
                         "제품이 소진되기 3일, 7일 전 마라 알림을 받을 수 있어요.",
                         width=card_width,
                     ),
-                    # ✅ switch_info_box()를 호출해서 마지막 단일 스위치 설정 박스 생성
+                    
                 ],
             ),
         ),

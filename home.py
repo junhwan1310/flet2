@@ -73,6 +73,7 @@ def custom_bottom_appbar(selected_index=0, on_tab_change=None):
     return ft.BottomAppBar(
         bgcolor=ft.Colors.YELLOW,
         shape=ft.CircularRectangleNotchShape(),  # ✅ 가운데 홈(파인 부분) 생성
+        # height=90,  # ✅ 바텀바 전체 높이 수정하고 싶을때
         content=ft.Row(
             spacing=8,
             alignment=ft.MainAxisAlignment.SPACE_AROUND,  # ✅ 버튼 사이를 자연스럽게 여백 주기
