@@ -1,15 +1,5 @@
 import flet as ft
 
-
-def arrow_back(on_click=None):
-    return ft.Container(
-        width=float("inf"),
-        alignment=ft.Alignment(-1, 0),
-        on_click=on_click,
-        content=ft.Icon(ft.Icons.ARROW_BACK),
-    )
-
-
 def about_dog():
     return ft.Column(
         spacing=0,
@@ -151,7 +141,6 @@ def main(page: ft.Page):
             horizontal_alignment=ft.CrossAxisAlignment.START,
             scroll=ft.ScrollMode.AUTO,
             controls=[
-                arrow_back(),
                 ft.Container(
                     margin=ft.margin.only(top=50),
                     content=about_dog(),

@@ -3,10 +3,10 @@ import flet as ft
 from home import home_view
 from log import log_view
 # from shop import shop_view
-def handle_menu_item_click(e):
+def handle_menu_item_click(e): # ☑️ 드롭다운 메뉴 항목을 눌렀을 때 실행되는 이벤트 함수
         print(f"{e.control.content.value}.on_click")
 
-def dog_list(dog):
+def dog_list(dog): # ☑️ 드롭다운 안의 강아지 리스트 함수
     return ft.MenuItemButton(
         width=200,
         content=ft.Text(dog, size=15),
@@ -19,7 +19,7 @@ def dog_list(dog):
     )
 
 # 메뉴바
-dog_menubar = ft.Row(
+dog_menubar = ft.Row(  # ☑️ 드롭다운을 감싸는 바 
         [
             ft.MenuBar(
                 expand=True,
@@ -35,7 +35,7 @@ dog_menubar = ft.Row(
                 ),
                 controls=[
                     ft.SubmenuButton(
-                        width=200,
+                        width=200, # ☑️ 숫자를 줄이니 메뉴바가 소멸하는데 드롭다운 기능은 존재 
                         content=ft.Row(
                                     alignment=ft.MainAxisAlignment.CENTER,
                                     controls=
@@ -56,7 +56,7 @@ dog_menubar = ft.Row(
     )
 
 # 상단
-def top_bar(align: ft.MainAxisAlignment, center):
+def top_bar(align: ft.MainAxisAlignment, center): # ☑️ 화면 맨 위 상단 바
     return ft.Column(
         controls=[
             ft.Container(
@@ -66,7 +66,7 @@ def top_bar(align: ft.MainAxisAlignment, center):
                             width=50,
                             height=50,
                         ),
-                        ft.Container(
+                        ft.Container( # ☑️ 현재 페이지에 따라 "Log" 같은 글자가 들어감
                             content = center,
                             # on_click=lambda e:print("")
                             ),
@@ -77,7 +77,7 @@ def top_bar(align: ft.MainAxisAlignment, center):
                             # ft.IconButton(icon=ft.Icons.SETTINGS_OUTLINED, icon_color=ft.Colors.BROWN_300, icon_size=25),
                         ),
                     ],
-                    alignment=align,
+                    alignment=align, # ☑️ 상단 바 내부 요소들의 가로 정렬
                 ),
                 bgcolor=ft.Colors.YELLOW_600,
             ),
@@ -86,7 +86,7 @@ def top_bar(align: ft.MainAxisAlignment, center):
 
 
 def main(page: ft.Page):
-    def get_nav_index():
+    def get_nav_index(): # ☑️ 현재 page.route가 하단 네비게이션의 몇 번째 탭인지 숫자로 반환
         if page.route == "/":
             return 0
         elif page.route == "/log":
@@ -99,9 +99,9 @@ def main(page: ft.Page):
             return 4
         return 0
 
-    def change_page(event):
+    def change_page(event): 
         print(event)
-        idx = event.control.selected_index
+        idx = event.control.selected_index  # ☑️ idx: 사용자가 누른 하단 탭의 번호
 
         if idx == 0:
             asyncio.create_task(page.push_route("/"))
@@ -116,8 +116,9 @@ def main(page: ft.Page):
 
     def bottom_nav():
         return ft.CupertinoNavigationBar(
+            #  height=90, # ✅ 바 높이 추가
             bgcolor=ft.Colors.YELLOW_600,
-            inactive_color=ft.Colors.BROWN_200,
+            inactive_color=ft.Colors.BROWN_200, # ☑️ 선택되지 않은 내비바 아이콘 & 글자 색상
             active_color=ft.Colors.BROWN_700,
             selected_index=get_nav_index(),   # 추가
             on_change= lambda e : change_page(e),
@@ -125,8 +126,8 @@ def main(page: ft.Page):
                 ft.NavigationBarDestination(icon=ft.Icons.HOME, label="Home"),
                 ft.NavigationBarDestination(icon=ft.Icons.CALENDAR_MONTH, label="Log"),
                 ft.NavigationBarDestination(
-                    icon=ft.Icons.FOOD_BANK_ROUNDED,
-                    selected_icon=ft.Icons.SHOPPING_CART,
+                    icon=ft.Icons.FOOD_BANK_ROUNDED,   # ☑️ 선택전 아이콘
+                    selected_icon=ft.Icons.SHOPPING_CART, # ☑️ 선택후 바뀐 아이콘
                     label="Shop",
                 ),
                 ft.NavigationBarDestination(icon=ft.Icons.MESSENGER_OUTLINE_ROUNDED, label="Contents"),
@@ -138,7 +139,7 @@ def main(page: ft.Page):
             ],
         ) 
 
-    def get_body():
+    def get_body():  # ☑️ 현재 route에 따라 본문에 어떤 화면을 넣을지 결정하는 함수
         if page.route == "/":
             return home_view(page)
 
@@ -151,9 +152,9 @@ def main(page: ft.Page):
         else:
             return ft.Text('페이지 준비 중')
 
-    def route_change(e):
+    def route_change(e): 
         if page.route == "/":
-            content = dog_menubar
+            content = dog_menubar # ☑️ 츄츄 드롭다운 았는 곳 
         elif page.route == "/log":
             content = ft.Text("Log", size=18)
         # elif page.route == "/shop":
@@ -172,9 +173,9 @@ def main(page: ft.Page):
 
         page.views.append(
             ft.View(
-                route=page.route,
+                route=page.route, # ☑️ 현재 이 View가 어떤 경로용 화면인지 표시
                 # bgcolor=ft.Colors.YELLOW,
-                navigation_bar=bottom_nav(),
+                navigation_bar=bottom_nav(), # ☑️ 하단 네비게이션 바 연결
                 controls = [
                     top_bar(ft.MainAxisAlignment.SPACE_BETWEEN, content),
                     ft.Container(
