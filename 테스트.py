@@ -1,91 +1,8 @@
 import flet as ft
 
 
-def arrow_back(on_click=None):
-    return ft.Container(
-        width=float("inf"),
-        alignment=ft.Alignment(-1, 0),
-        on_click=on_click,
-        content=ft.Icon(ft.Icons.ARROW_BACK),
-    )
-
-
-def about_dog():
-    return ft.Column(
-        spacing=0,
-        controls=[
-            ft.Text(
-                "About your Dog",
-                weight=ft.FontWeight.W_500,
-                color=ft.Colors.BLACK,
-                size=30,
-            ),
-            ft.Text(
-                "반려동물의 기본 정보를 입력하세요",
-                weight=ft.FontWeight.W_500,
-                color=ft.Colors.BLACK,
-                size=15,
-            ),
-        ],
-    )
-
-
-def long_box(
-    text,
-    bgcolor=ft.Colors.WHITE,
-    text_color=ft.Colors.BLACK,
-    border_color=ft.Colors.GREY_300,
-    on_click=None,
-    icon=None,
-):
-    controls = []
-
-    if icon:
-        controls.append(ft.Icon(icon, size=18, color=text_color))
-
-    controls.append(
-        ft.Text(
-            text,
-            size=14,
-            weight=ft.FontWeight.W_500,
-            color=text_color,
-        )
-    )
-
-    return ft.Container(
-        width=350,
-        height=50,
-        bgcolor=bgcolor,
-        border=ft.Border.all(1, border_color),
-        border_radius=10,
-        padding=10,
-        alignment=ft.Alignment(0, 0),
-        on_click=on_click,
-        content=ft.Row(
-            alignment=ft.MainAxisAlignment.CENTER,
-            vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            spacing=8,
-            controls=controls,
-        ),
-    )
-
-
-def bottom_continue_button(on_click=None):
-    return ft.Container(
-        alignment=ft.Alignment(0, 1),
-        padding=ft.padding.only(bottom=20),
-        content=long_box(
-            "Continue",
-            bgcolor=ft.Colors.YELLOW,
-            text_color=ft.Colors.BLACK,
-            on_click=on_click,
-        ),
-    )
-
-
 def main(page: ft.Page):
     page.bgcolor = ft.Colors.WHITE
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.scroll = ft.ScrollMode.AUTO
     page.title = "For Dog2"
@@ -144,18 +61,12 @@ def main(page: ft.Page):
     )
 
     body = ft.Container(
-        padding=ft.padding.only(top=0),
+        width=350,
+        padding=ft.padding.only(top=40, bottom=20),
         content=ft.Column(
-            width=350,
             spacing=12,
             horizontal_alignment=ft.CrossAxisAlignment.START,
-            scroll=ft.ScrollMode.AUTO,
             controls=[
-                arrow_back(),
-                ft.Container(
-                    margin=ft.margin.only(top=50),
-                    content=about_dog(),
-                ),
                 ft.Text(
                     "반려동물의 체형은 몇단계인가요?",
                     weight=ft.FontWeight.W_500,
@@ -194,8 +105,6 @@ def main(page: ft.Page):
                     padding=ft.padding.only(top=4, left=4, right=4, bottom=10),
                     content=body_score_description_text,
                 ),
-
-                bottom_continue_button(),
             ],
         ),
     )
