@@ -138,7 +138,7 @@ def answer_box(
                                                 border_radius=9,
                                                 clip_behavior=ft.ClipBehavior.HARD_EDGE,
                                                 content=ft.Image(
-                                                    src="ddoglogo.png",
+                                                    src="dogsquarelogo.png",
                                                     fit=ft.BoxFit.COVER,
                                                 ),
                                             ),
