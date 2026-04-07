@@ -37,7 +37,7 @@ def grey_notification_box(
                                     border_radius=9,  # ✅ 원형
                                     clip_behavior=ft.ClipBehavior.HARD_EDGE,  # ✅ 이거 없으면 안 잘림
                                     content=ft.Image(
-                                        src="ddoglogo.png",  # 👉 assets 폴더에 넣어둬야 함
+                                        src="dogsquarelogo.png",  # 👉 assets 폴더에 넣어둬야 함
                                         fit=ft.BoxFit.COVER,  # ✅ 핵심: 꽉 채우기
                                     ),
                                 ),
